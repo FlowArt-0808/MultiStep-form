@@ -1,7 +1,6 @@
-import { useState } from "react";
-import { PineconeLogo } from "../icons/PineconeLogo";
-import { RightFacingVector } from "../icons/RightFacingVector";
-import { LeftFacingVector } from "../icons/LeftFacingVector";
+import React, { useState } from "react";
+import { LeftFacingVector } from "./LeftFacingVector";
+import { PineconeLogo } from "./PineconeLogo";
 
 export const StepTwo = ({ nextStep, prevStep, updateFormData, data }) => {
   const [errors, setErrors] = useState({});
@@ -12,11 +11,11 @@ export const StepTwo = ({ nextStep, prevStep, updateFormData, data }) => {
     const newErrors = {};
 
     if (!emailRegex.test(data.email)) {
-      newErrors.email = "Please enter a valid email address.";
+      newErrors.email = "Enter a valid email address.";
     }
 
     if (!phoneRegex.test(data.phone)) {
-      newErrors.phone = "Phone number must be 8–12 digits.";
+      newErrors.phone = "Phone number must be 8 to 12 digits.";
     }
 
     if (!data.password) {
@@ -30,103 +29,89 @@ export const StepTwo = ({ nextStep, prevStep, updateFormData, data }) => {
     }
 
     setErrors(newErrors);
-    if (Object.keys(newErrors).length === 0) nextStep();
+
+    if (Object.keys(newErrors).length === 0) {
+      nextStep();
+    }
   };
 
   return (
-    <div className="">
-      <PineconeLogo />
-      <h2 className="">Join Us! 😎</h2>
-      <p className="">Please provide all current information accurately.</p>
-
-      <div className="">
+    <section className="card">
+      <div className="brand-row">
+        <PineconeLogo />
         <div>
-          <label className="">
-            Email <span className="">*</span>
-          </label>
+          <h1>Join Us! 😎</h1>
+          <p className="subcopy">
+            Please provide all current information accurately.
+          </p>
+        </div>
+      </div>
+
+      <div className="form-grid">
+        <label className="field field-full">
+          <span>
+            Email <em>*</em>
+          </span>
           <input
             type="email"
-            placeholder="Your email"
-            className={` ${
-              errors.email ? "border-red-500" : "border-gray-300"
-            }`}
             value={data.email}
-            onChange={(e) => updateFormData({ email: e.target.value })}
+            onChange={(event) => updateFormData({ email: event.target.value })}
           />
-          {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-          )}
-        </div>
+          {errors.email && <small className="error">{errors.email}</small>}
+        </label>
 
-        <div>
-          <label className="">
-            Phone number <span className="text-red-500">*</span>
-          </label>
+        <label className="field field-full">
+          <span>
+            Phone number <em>*</em>
+          </span>
           <input
             type="tel"
-            placeholder="Your phone number"
-            className={` ${
-              errors.phone ? "border-red-500" : "border-gray-300"
-            }`}
             value={data.phone}
-            onChange={(e) => updateFormData({ phone: e.target.value })}
+            onChange={(event) => updateFormData({ phone: event.target.value })}
           />
-          {errors.phone && (
-            <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
-          )}
-        </div>
+          {errors.phone && <small className="error">{errors.phone}</small>}
+        </label>
 
-        <div>
-          <label className="font-medium text-gray-700">
-            Password <span className="text-red-500">*</span>
-          </label>
+        <label className="field">
+          <span>
+            Password <em>*</em>
+          </span>
           <input
             type="password"
-            placeholder="Your password"
-            className={`mt-1 w-full p-2.5 border rounded-lg ${
-              errors.password ? "border-red-500" : "border-gray-300"
-            }`}
             value={data.password}
-            onChange={(e) => updateFormData({ password: e.target.value })}
+            onChange={(event) =>
+              updateFormData({ password: event.target.value })
+            }
           />
-          {errors.password && (
-            <p className="text-red-500 text-sm mt-1">{errors.password}</p>
-          )}
-        </div>
+          {errors.password && <small className="error">{errors.password}</small>}
+        </label>
 
-        <div>
-          <label className="">
-            Confirm password <span className="text-red-500">*</span>
-          </label>
+        <label className="field">
+          <span>
+            Confirm password <em>*</em>
+          </span>
           <input
             type="password"
-            placeholder="Confirm password"
-            className={` ${
-              errors.confirmPassword ? "border-red-500" : "border-gray-300"
-            }`}
             value={data.confirmPassword}
-            onChange={(e) =>
-              updateFormData({ confirmPassword: e.target.value })
+            onChange={(event) =>
+              updateFormData({ confirmPassword: event.target.value })
             }
           />
           {errors.confirmPassword && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.confirmPassword}
-            </p>
+            <small className="error">{errors.confirmPassword}</small>
           )}
-        </div>
+        </label>
       </div>
 
-      <div className="flex justify-between mt-8">
-        <button onClick={prevStep} className="">
+      <div className="actions">
+        <button type="button" className="secondary-button" onClick={prevStep}>
           <LeftFacingVector />
           Back
         </button>
-        <button onClick={handleNext} className="">
+        <button type="button" className="primary-button" onClick={handleNext}>
           Continue 2/3
-          <RightFacingVector />
         </button>
       </div>
-    </div>
+    </section>
   );
 };

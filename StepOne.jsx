@@ -1,6 +1,5 @@
-import { useState } from "react";
-import { PineconeLogo } from "../icons/PineconeLogo";
-import { RightFacingVector } from "../icons/RightFacingVector";
+import React, { useState } from "react";
+import { PineconeLogo } from "./PineconeLogo";
 
 export const StepOne = ({ nextStep, updateFormData, data }) => {
   const [errors, setErrors] = useState({});
@@ -9,97 +8,93 @@ export const StepOne = ({ nextStep, updateFormData, data }) => {
   const handleNext = () => {
     const newErrors = {};
 
-    if (!data.firstName) {
+    if (!data.firstName.trim()) {
       newErrors.firstName = "First name is required.";
-    } else if (!nameRegex.test(data.firstName)) {
-      newErrors.firstName =
-        "First name cannot contain special characters or numbers.";
+    } else if (!nameRegex.test(data.firstName.trim())) {
+      newErrors.firstName = "Only letters are allowed in the first name.";
     }
 
-    if (!data.lastName) {
+    if (!data.lastName.trim()) {
       newErrors.lastName = "Last name is required.";
-    } else if (!nameRegex.test(data.lastName)) {
-      newErrors.lastName =
-        "Last name cannot contain special characters or numbers.";
+    } else if (!nameRegex.test(data.lastName.trim())) {
+      newErrors.lastName = "Only letters are allowed in the last name.";
     }
 
-    if (!data.username) {
+    if (!data.username.trim()) {
       newErrors.username = "Username is required.";
-    } else if (
-      ["amgaa", "john", "admin"].includes(data.username.toLowerCase())
-    ) {
-      newErrors.username =
-        "This username is already taken. Please choose another one.";
+    } else if (["amgaa", "john", "admin"].includes(data.username.toLowerCase())) {
+      newErrors.username = "That username is already taken.";
     }
 
     setErrors(newErrors);
-    if (Object.keys(newErrors).length === 0) nextStep();
+
+    if (Object.keys(newErrors).length === 0) {
+      nextStep();
+    }
   };
 
   return (
-    <div className="bg-white w-120 h-163">
-      <div className="p-8 gap-2">
-        <div className="flex-col">
-          <PineconeLogo />
-          <h2 className="font-semibold text-[#202124] text-[26px]">
-            Join Us! 😎
-          </h2>
-          <p className="text-[#8E8E8E] text-[18px]">
+    <section className="card">
+      <div className="brand-row">
+        <PineconeLogo />
+        <div>
+          <h1>Join Us! 😎</h1>
+          <p className="subcopy">
             Please provide all current information accurately.
           </p>
         </div>
-        <div className="">
-          <div>
-            <label className="text">
-              First name <span className="">*</span>
-            </label>
-            <input
-              type="text"
-              className={` ${
-                errors.firstName ? "border-red-500" : "border-gray-300"
-              }`}
-              value={data.firstName}
-              onChange={(e) => updateFormData({ firstName: e.target.value })}
-            />
-            {errors.firstName && <p className="">{errors.firstName}</p>}
-          </div>
+      </div>
 
-          <div>
-            <label className="">
-              Last name <span className="">*</span>
-            </label>
-            <input
-              type="text"
-              className={` ${errors.lastName ? "" : ""}`}
-              value={data.lastName}
-              onChange={(e) => updateFormData({ lastName: e.target.value })}
-            />
-            {errors.lastName && <p className="">{errors.lastName}</p>}
-          </div>
+      <div className="form-grid">
+        <label className="field">
+          <span>
+            First name <em>*</em>
+          </span>
+          <input
+            type="text"
+            value={data.firstName}
+            onChange={(event) =>
+              updateFormData({ firstName: event.target.value })
+            }
+          />
+          {errors.firstName && <small className="error">{errors.firstName}</small>}
+        </label>
 
-          <div>
-            <label className="">
-              Username <span className="">*</span>
-            </label>
-            <input
-              type="text"
-              className={`mt-1 w-full p-2.5 border rounded-lg ${
-                errors.username ? "border-red-500" : "border-gray-300"
-              }`}
-              value={data.username}
-              onChange={(e) => updateFormData({ username: e.target.value })}
-            />
-            {errors.username && (
-              <p className="text-red-50```0 text-sm mt-1">{errors.username}</p>
-            )}
-          </div>
-        </div>
+        <label className="field">
+          <span>
+            Last name <em>*</em>
+          </span>
+          <input
+            type="text"
+            value={data.lastName}
+            onChange={(event) =>
+              updateFormData({ lastName: event.target.value })
+            }
+          />
+          {errors.lastName && <small className="error">{errors.lastName}</small>}
+        </label>
 
-        <button onClick={handleNext} className="">
-          <div>Continue 1/3 </div>
-          <RightFacingVector />
+        <label className="field field-full">
+          <span>
+            Username <em>*</em>
+          </span>
+          <input
+            type="text"
+            value={data.username}
+            onChange={(event) =>
+              updateFormData({ username: event.target.value })
+            }
+          />
+          {errors.username && <small className="error">{errors.username}</small>}
+        </label>
+      </div>
+
+      <div className="actions">
+        <div className="progress-copy">Step 1 of 3</div>
+        <button type="button" className="primary-button" onClick={handleNext}>
+          Continue 1/3
         </button>
       </div>
-    </div>
+    </section>
   );
 };
